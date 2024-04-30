@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Button, View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { loginScreenStyles } from './src/styles/styles';
+import { loginScreenStyles, forgotPasswordScreenStyles, dashboardScreen } from './src/styles/styles';
 import cores from './src/styles/styles'
 
 
-
+// 648x1266 imagem de background
 
 
 
@@ -29,6 +29,7 @@ function LoginScreen({ navigation }) {
       <TextInput
         placeholder="Email"
         placeholderTextColor={cores.primary}
+        keyboardType="email-address"
         style={loginScreenStyles.input}
       />
       <TextInput
@@ -37,9 +38,10 @@ function LoginScreen({ navigation }) {
         secureTextEntry={true}
         style={loginScreenStyles.input}
       />
-
+        
       {/* Botão de Entrar */}
       <TouchableOpacity
+        onPress={() => navigation.navigate('Dashboard')}
         style={loginScreenStyles.buttonLogin}
       >
         <Text style={loginScreenStyles.buttonText}>Entrar</Text>
@@ -47,15 +49,12 @@ function LoginScreen({ navigation }) {
 
       {/* Botão de Esqueci a Senha */}
       <TouchableOpacity
+        onPress={() => navigation.navigate('Esqueci a senha')}
         style={loginScreenStyles.buttonPassword}
       >
         <Text style={loginScreenStyles.buttonText}>Esqueci a senha</Text>
       </TouchableOpacity>
-  
-        {/* <Button
-            title="Go to Profile"
-            onPress={() => navigation.navigate('Profile')}
-        /> */}
+
 
     </View>
   );
@@ -67,14 +66,49 @@ function LoginScreen({ navigation }) {
 
 
 
-function ProfileScreen({ navigation }) {
+function ForgotPasswordScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button
-        title="Notificações"
-        onPress={() => navigation.navigate('Notifications')}
-      />
-      <Button title="Voltar" onPress={() => navigation.goBack()} />
+    <View style={forgotPasswordScreenStyles.container}>
+
+    {/* Logo */}
+
+    <Image
+    source={require('./assets/img/logoVivaBem.png')}
+    style={forgotPasswordScreenStyles.logo}
+    />
+
+    {/* Título */}
+    <Text style={forgotPasswordScreenStyles.title}>PREENCHA SEUS DADOS</Text>
+
+    {/* Campos de Input */}
+    <TextInput
+    placeholder="Email: "
+    placeholderTextColor={cores.primary}
+    keyboardType="email-address"
+    style={forgotPasswordScreenStyles.input}
+    />
+    <TextInput
+    placeholder="Data Nasc: "
+    placeholderTextColor={cores.primary}
+    keyboardType="numeric"
+    style={forgotPasswordScreenStyles.input}
+    />
+    <TextInput
+    placeholder="Telefone: "
+    placeholderTextColor={cores.primary}
+    keyboardType="numeric"
+    style={forgotPasswordScreenStyles.input}
+    />
+
+    
+    {/* Botão de Confirmar */}
+    <TouchableOpacity
+    onPress={() => navigation.navigate('Login')}
+    style={forgotPasswordScreenStyles.buttonConfirm}
+    >
+    <Text style={forgotPasswordScreenStyles.buttonText}>CONFIRMAR</Text>
+    </TouchableOpacity>
+
     </View>
   );
 }
@@ -86,14 +120,60 @@ function ProfileScreen({ navigation }) {
 
 
 
-function NotificationsScreen({ navigation }) {
+function DashboardScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button
-        title="Configurações"
-        onPress={() => navigation.navigate('Settings')}
-      />
-      <Button title="Voltar" onPress={() => navigation.goBack()} />
+    <View style={dashboardScreen.container}>
+      {/* Título */}
+      <View style={dashboardScreen.titleContainer}>
+        <Text style={dashboardScreen.titleName}>
+          Olá, {'<usuário>'}
+        </Text>
+      </View>
+
+      {/* Planos */}
+      <View style={dashboardScreen.plansContainer}>
+        <Text style={dashboardScreen.planName}>
+          {'<Nome do Plano>'}
+        </Text>
+        <View style={dashboardScreen.sessionInfo}>
+          <Text style={dashboardScreen.sessionParagraph}>Você está na sua</Text>
+          <Text style={[dashboardScreen.sessionParagraph, { fontWeight: 'bold', fontSize: 30 }]}>
+            {'<cont>ª'}
+          </Text> 
+          <Text style={dashboardScreen.sessionParagraph}>sessão de treinos.</Text>
+        </View>
+        <View style={dashboardScreen.buttonsContainer}>
+          {/* Botão de acessar aulas*/}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+            style={dashboardScreen.buttonPlan}
+          >
+            <Text style={dashboardScreen.buttonText}>Acesse suas aulas</Text>
+          </TouchableOpacity>
+
+          {/* Botão de acessar treinos */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+            style={dashboardScreen.buttonPlan}
+          >
+            <Text style={dashboardScreen.buttonText}>Acesse seu treino</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={dashboardScreen.upgradeContainer}>
+          {/* Imagem */}
+          <Image
+            source={require('./assets/img/fundoDashboard.png')} // Substitua pelo caminho da sua imagem
+        
+          />
+          {/* Botão de acessar treinos */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+            style={[dashboardScreen.button, dashboardScreen.upgradeButton]}
+          >
+            <Text style={dashboardScreen.buttonText}>UPGRADE DO PLANO</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
@@ -104,16 +184,6 @@ function NotificationsScreen({ navigation }) {
 
 
 
-function SettingsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button 
-        title="Voltar" 
-        onPress={() => navigation.goBack()} 
-      />
-    </View>
-  );
-}
 
 
 
@@ -127,11 +197,11 @@ function MyStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Notifications" component={NotificationsScreen} />
-      <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="Esqueci a senha" component={ForgotPasswordScreen} />
+      <Stack.Screen name="Dashboard" component={DashboardScreen} />
     </Stack.Navigator>
   );
+//   <Stack.Navigator screenOptions={{ headerShown: false }}></Stack.Navigator>
 }
 
 export default function App() {
