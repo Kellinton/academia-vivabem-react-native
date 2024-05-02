@@ -119,7 +119,7 @@ export const forgotPasswordScreenStyles = {
 };
 
 // Tela de Dashboard
-export const dashboardScreen = {
+export const dashboardScreenStyles = {
     container: {
         backgroundColor: '#fff',
         flex: 1,

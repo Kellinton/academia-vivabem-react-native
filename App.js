@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Button, View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { loginScreenStyles, forgotPasswordScreenStyles, dashboardScreen } from './src/styles/styles';
-import cores from './src/styles/styles'
+import { Ionicons } from '@expo/vector-icons';
+import { loginScreenStyles, forgotPasswordScreenStyles, dashboardScreenStyles } from './src/styles/styles';
+import cores from './src/styles/styles';
 
 
 // 648x1266 imagem de background
@@ -122,44 +124,44 @@ function ForgotPasswordScreen({ navigation }) {
 
 function DashboardScreen({ navigation }) {
   return (
-    <View style={dashboardScreen.container}>
+    <View style={dashboardScreenStyles.container}>
       {/* Título */}
-      <View style={dashboardScreen.titleContainer}>
-        <Text style={dashboardScreen.titleName}>
+      <View style={dashboardScreenStyles.titleContainer}>
+        <Text style={dashboardScreenStyles.titleName}>
           Olá, {'<usuário>'}
         </Text>
       </View>
 
       {/* Planos */}
-      <View style={dashboardScreen.plansContainer}>
-        <Text style={dashboardScreen.planName}>
+      <View style={dashboardScreenStyles.plansContainer}>
+        <Text style={dashboardScreenStyles.planName}>
           {'<Nome do Plano>'}
         </Text>
-        <View style={dashboardScreen.sessionInfo}>
-          <Text style={dashboardScreen.sessionParagraph}>Você está na sua</Text>
-          <Text style={[dashboardScreen.sessionParagraph, { fontWeight: 'bold', fontSize: 30 }]}>
+        <View style={dashboardScreenStyles.sessionInfo}>
+          <Text style={dashboardScreenStyles.sessionParagraph}>Você está na sua</Text>
+          <Text style={[dashboardScreenStyles.sessionParagraph, { fontWeight: 'bold', fontSize: 30 }]}>
             {'<cont>ª'}
           </Text> 
-          <Text style={dashboardScreen.sessionParagraph}>sessão de treinos.</Text>
+          <Text style={dashboardScreenStyles.sessionParagraph}>sessão de treinos.</Text>
         </View>
-        <View style={dashboardScreen.buttonsContainer}>
+        <View style={dashboardScreenStyles.buttonsContainer}>
           {/* Botão de acessar aulas*/}
           <TouchableOpacity
             onPress={() => navigation.navigate('Login')}
-            style={dashboardScreen.buttonPlan}
+            style={dashboardScreenStyles.buttonPlan}
           >
-            <Text style={dashboardScreen.buttonText}>Acesse suas aulas</Text>
+            <Text style={dashboardScreenStyles.buttonText}>Acesse suas aulas</Text>
           </TouchableOpacity>
 
           {/* Botão de acessar treinos */}
           <TouchableOpacity
             onPress={() => navigation.navigate('Login')}
-            style={dashboardScreen.buttonPlan}
+            style={dashboardScreenStyles.buttonPlan}
           >
-            <Text style={dashboardScreen.buttonText}>Acesse seu treino</Text>
+            <Text style={dashboardScreenStyles.buttonText}>Acesse seu treino</Text>
           </TouchableOpacity>
         </View>
-        <View style={dashboardScreen.upgradeContainer}>
+        <View style={dashboardScreenStyles.upgradeContainer}>
           {/* Imagem */}
           <Image
             source={require('./assets/img/fundoDashboard.png')} // Substitua pelo caminho da sua imagem
@@ -168,9 +170,9 @@ function DashboardScreen({ navigation }) {
           {/* Botão de acessar treinos */}
           <TouchableOpacity
             onPress={() => navigation.navigate('Login')}
-            style={[dashboardScreen.button, dashboardScreen.upgradeButton]}
+            style={[dashboardScreenStyles.button, dashboardScreenStyles.upgradeButton]}
           >
-            <Text style={dashboardScreen.buttonText}>UPGRADE DO PLANO</Text>
+            <Text style={dashboardScreenStyles.buttonText}>UPGRADE DO PLANO</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -204,11 +206,18 @@ function MyStack() {
 //   <Stack.Navigator screenOptions={{ headerShown: false }}></Stack.Navigator>
 }
 
-export default function App() {
-  return (
-    // Container de navegação
-    <NavigationContainer>
-      <MyStack />
-    </NavigationContainer>
-  );
+const Tab = createBottomTabNavigator();
+
+    export default function App() {
+    return (
+        <NavigationContainer>
+        <Tab.Navigator screenOptions={{ headerShown: false }}>
+            <Tab.Screen name="Exercícios" component={MyStack} options={{tabBarIcon:({color, size}) => <Ionicons name='barbell-outline' color={color} size={size} /> }} />
+            <Tab.Screen name="Vídeos" component={MyStack} options={{tabBarIcon:({color, size}) => <Ionicons name='play-outline' color={color} size={size} /> }} />
+            <Tab.Screen name="Aulas" component={MyStack} options={{tabBarIcon:({color, size}) => <Ionicons name='body-outline' color={color} size={size} /> }} />
+            <Tab.Screen name="Perfil" component={MyStack} options={{tabBarIcon:({color, size}) => <Ionicons name='person-circle-outline' color={color} size={size} /> }} />
+            {/* Adicione mais tabs conforme necessário */}
+        </Tab.Navigator>
+        </NavigationContainer>
+    );
 }
