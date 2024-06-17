@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "academia-vivabem-react-native",
-    "slug": "academia-vivabem-react-native",
+    "name": "ProjetoAplicativo",
+    "slug": "ProjetoAplicativo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
