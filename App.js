@@ -1,8 +1,8 @@
 import * as React from "react";
 import {useState} from "react"; // Reconhe os comandos de start Inicial
 
-// import Modal  from "react-native-modal";
-import { Modal } from "react-native-paper";
+import Modal from "react-native-modal";
+
 
 import axios from "axios"; // Faz a requisição HTTP para a API
 import AsyncStorage from "@react-native-async-storage/async-storage"; // É usado para armazenar e recuperar dados localmente em aplicativos React Native.
@@ -90,7 +90,7 @@ function MyTabs({route}) {
       <Tab.Screen
         name="HomeTab"
         component={HomeStack}
-        initialParams={{idAluno: route.params.idAluno}}
+        initialParams={{idAluno: route.params.idAluno}} //  id sendo variável global
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={24} color="#34495e" />
@@ -156,19 +156,23 @@ function LoginScreen({ navigation }) {
 
   const handleLogin = async () => {  // Declara uma função assíncrona 'handleLogin' para tratar a ação de login, e verificando se o email ou a senha estõa preenchidos
   if (!email.trim() || !senha.trim()){
+    console.log(email);
     setErrorModalVisible(true);
     return;
   }
 
   try {
-    const resposta = await axios.post(`http://127.0.0.1:8000/api/login?email=${email}$senha=${senha}`);  // Envia uma requisição POST assíncrona usando axios e espera pela resposta
+    const resposta = await axios.post(`http://127.0.0.1:8000/api/login`, {
+        email: email,
+        senha: senha
+    });
     if (resposta.data) {  // Verifica se a resposta contém dados
       const aluno = resposta.data;  // Armazena os dados da resposta na variável 'aluno'
   
       if (aluno) {  // Verifica se 'aluno' não é nulo ou indefinido
         console.log(aluno);  // Imprime o objeto 'aluno' no console
         console.log(aluno.usuario.dados_aluno.idAluno);  // Imprime o 'idAluno' do aluno no console
-        console.log(aluno.usuario.dados_aluno.nomeAluno);  // Imprime o 'nomeAluno' no console
+        console.log(aluno.usuario.dados_aluno.nome);  // Imprime o 'nomeAluno' no console
         console.log(aluno.acess_token);  // Imprime o token de acesso no console
   
         const idAluno = aluno.usuario.dados_aluno.idAluno;  // Extrai e armazena o 'idAluno' da resposta
@@ -206,7 +210,7 @@ function LoginScreen({ navigation }) {
         style={[styles.input, isFocused && styles.focusedInput]}
         placeholder="Digite sua senha:"
         value={senha}
-        onChange={setSenha}
+        onChangeText={setSenha}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
@@ -267,7 +271,7 @@ export default function App() {
           options={{ headerShown: false }} // Oculta o cabeçalho na tela de login
         />
         <Stack.Screen
-          name="Main"
+          name="Home" // Main
           component={MyTabs}
           options={{ headerShown: false }} // Oculta o cabeçalho na tela principal
         />
